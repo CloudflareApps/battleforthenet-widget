@@ -1,0 +1,31 @@
+{
+  "name": "battleforthenet-widget",
+  "version": "1.0.0",
+  "description": "Add this to any page, and you're golden: ([**See the demo!**](https://widget.battleforthenet.com/demos/modal.html))",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-replace": "^0.6.1",
+    "gulp-uglify": "^3.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-replace": "^0.6.1",
+    "gulp-uglify": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CloudflareApps/battleforthenet-widget.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CloudflareApps/battleforthenet-widget/issues"
+  },
+  "homepage": "https://github.com/CloudflareApps/battleforthenet-widget#readme"
+}

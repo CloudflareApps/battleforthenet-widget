@@ -1,6 +1,5 @@
 (function() {
   if (typeof _bftn_options == "undefined") _bftn_options = {};
-  if (typeof _bftn_options.iframe_base_path == "undefined") _bftn_options.iframe_base_path = 'https://widget.battleforthenet.com/iframe';
   if (typeof _bftn_options.animation == "undefined") _bftn_options.animation = 'main';
   if (typeof _bftn_options.delay == "undefined") _bftn_options.delay = 1000;
   if (typeof _bftn_options.debug == "undefined") _bftn_options.debug = false;
@@ -39,7 +38,7 @@
     createIframe: function() {
       var iframe = document.createElement('iframe');
       iframe.id = '_bftn_iframe';
-      iframe.src = _bftn_options.iframe_base_path + '/iframe.html';
+      iframe.src = "data:text/html;base64,ENCODED_IFRAME_SRC";
       iframe.frameBorder = 0;
       iframe.allowTransparency = true; 
       iframe.style.display = 'none';
