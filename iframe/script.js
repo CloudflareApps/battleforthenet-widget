@@ -42,7 +42,7 @@
           className: theme,
           logos: ['images/money.png'],
           headline: 'Please upgrade your plan to proceed.',
-          body: 'Just kidding. You can still get to this site *for now*. But if the FCC ends net neutrality, your cable company could charge you extra fees just to use the websites and apps you want. We can stop them and keep the Internet open, fast, and awesome if we all contact Congress and the FCC, but we only have a few days left.'
+          body: 'Just kidding. You can still get to this site <i>for now</i>. But if the FCC ends net neutrality, your cable company could charge you extra fees just to use the websites and apps you want. We can stop them and keep the Internet open, fast, and awesome if we all contact Congress and the FCC, but we only have a few days left.'
         };
       case 'stop':
         return {
@@ -85,7 +85,7 @@
 
     // Render headline and body copy
     document.getElementById('headline').textContent = theme.headline;
-    document.getElementById('content').innerText = theme.body;
+    document.getElementById('content').innerHTML = theme.body;
   }
 
   function renderOrgSignupCheckbox(org) {
