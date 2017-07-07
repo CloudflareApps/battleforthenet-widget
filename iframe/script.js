@@ -77,7 +77,7 @@
 
     for (var i = 0; i < theme.logos.length; i++) {
       img = document.createElement('img');
-      img.setAttribute('src', theme.logos[i]);
+      img.setAttribute('src', 'RESOURCE_ROOT/' + theme.logos[i]);
       fragment.appendChild(img);
     }
 
