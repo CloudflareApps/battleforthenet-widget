@@ -1,0 +1,46 @@
+{
+  "resources": {
+    "body": [
+      {
+        "type": "script",
+        "src": "./install/app.js"
+      },
+      {
+        "type": "script",
+        "src": "./build/widget.js"
+      }
+    ]
+  },
+  "disabled_preview": {
+    "handlers": [
+      {
+        "options": ["*"],
+        "execute": "INSTALL_SCOPE.setOptions(INSTALL_OPTIONS)"
+      }
+    ]
+  },
+  "options": {
+    "properties": {
+      "theme": {
+        "order": 0,
+        "title": "Message",
+        "description": "What message should your visitors see?",
+        "type": "string",
+        "format": "radios",
+        "default": "slow",
+        "enum": [
+          "slow",
+          "money",
+          "stop",
+          "without"
+        ],
+        "enumNames": {
+          "money": "“Please upgrade your plan to proceed.”",
+          "stop": "“This site has been blocked by your ISP.”",
+          "slow": "“Sorry, we’re stuck in the slow lane.”",
+          "without": "“This is the web without net neutrality.”"
+        }
+      }
+    }
+  }
+}
