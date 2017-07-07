@@ -88,7 +88,7 @@
     document.getElementById('content').innerText = theme.body;
   }
 
-  function renderDisclaimer(org) {
+  function renderOrgSignupCheckbox(org) {
     var fragment = document.createDocumentFragment();
 
     var orgInput = document.createElement('input');
@@ -100,20 +100,11 @@
     var checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('name', 'opt_in');
-    checkbox.setAttribute('checked', 'checked');
     fragment.appendChild(checkbox);
 
-    var orgLink = document.createElement('a');
-    orgLink.setAttribute('href', org.url);
-    orgLink.setAttribute('target', '_blank');
-    orgLink.textContent = org.name;
-    fragment.appendChild(orgLink);
-
-    var disclaimer = document.createElement('span');
-    disclaimer.textContent = ' will contact you about future campaigns.';
-    fragment.appendChild(disclaimer);
-
-    document.getElementById('rotation').appendChild(fragment);
+    var el = document.getElementById('organization-signup-checkbox');
+    el.appendChild(fragment);
+    el.style.display = 'none'
   }
 
   function sendMessage(requestType, data) {
@@ -132,7 +123,7 @@
         for (var k in options) this.options[k] = options[k];
 
         renderContent(getTheme(this.options.theme));
-        renderDisclaimer(getOrg(this.options.org));
+        renderOrgSignupCheckbox(getOrg(this.options.org));
 
         return this;
       },

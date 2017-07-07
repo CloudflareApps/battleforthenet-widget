@@ -27,7 +27,7 @@
         "description": "What message should your visitors see?",
         "type": "string",
         "format": "radios",
-        "default": "slow",
+        "default": "stop",
         "enum": [
           "slow",
           "money",
