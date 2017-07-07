@@ -17,7 +17,7 @@ If you have any problems or questions regarding the widget, please [submit an is
 
 * Run `npm install`
 * Run `gulp` or `gulp watch`
-* The to include is `build/widget.js`
+* The file to include is `build/widget.js`
 
 # How it works
 
