@@ -258,6 +258,14 @@ h3 {
   color: #fff !important;
   padding: .3em .8em .4em;
   border-radius: 2px;
+  white-space: nowrap;
+}
+
+@media (max-width: 500px) {
+  .modal .powered-by a.button {
+    display: inline-block;
+    margin-top: 1em;
+  }
 }
 
 .modal .powered-by a:hover {
