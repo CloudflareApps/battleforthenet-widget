@@ -244,7 +244,7 @@ h3 {
 }
 
 .modal .powered-by p {
-  font-size: 1.15em;
+  font-size: 1em;
 }
 
 .modal .powered-by p span {
@@ -254,6 +254,14 @@ h3 {
 .modal .powered-by a {
   color: #333;
   text-decoration: none;
+}
+
+.modal .powered-by a.button {
+  font-size: .9em;
+  background: #464242;
+  color: #fff !important;
+  padding: .3em .8em .4em;
+  border-radius: 2px;
 }
 
 .modal .powered-by a:hover {
