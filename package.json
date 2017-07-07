@@ -23,7 +23,7 @@
     "url": "git+https://github.com/CloudflareApps/battleforthenet-widget.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/CloudflareApps/battleforthenet-widget/issues"
   },
