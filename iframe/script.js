@@ -1,6 +1,11 @@
 (function() {
   var transitionTimer;
 
+  var loading = document.getElementById('loading');
+  var main = document.getElementById('main');
+  var callPrompt = document.getElementById('prompt');
+  var callScript = document.getElementById('script');
+
   function getOrg(org) {
     function getRandomOrg() {
       var coinToss = Math.random();
@@ -18,17 +23,20 @@
       'dp': {
         code: 'dp',
         name: 'Demand Progress',
-        url: 'https://demandprogress.org/'
+        url: 'https://demandprogress.org/',
+        donate: 'https://secure.actblue.com/donate/nndayofaction?refcode=20170712-bftn'
       },
       'fp': {
         code: 'fp',
         name: 'Free Press',
-        url: 'https://www.freepress.net/'
+        url: 'https://www.freepress.net/',
+        donate: 'https://freepress.actionkit.com/donate/single/'
       },
       'fftf': {
         code: 'fftf',
         name: 'Fight for the Future',
-        url: 'https://www.fightforthefuture.org/'
+        url: 'https://www.fightforthefuture.org/',
+        donate: 'https://donate.fightforthefuture.org/'
       }
     };
 
@@ -36,36 +44,54 @@
   }
 
   function getTheme(theme) {
-    switch(theme) {
+    var themeObj;
+
+    switch(typeof theme === 'string' ? theme : '') {
       case 'money':
-        return {
+        themeObj = {
           className: theme,
           logos: ['images/money.png'],
           headline: 'Please upgrade your plan to proceed.',
-          body: 'Just kidding. You can still get to this site <i>for now</i>. But if the FCC ends net neutrality, your cable company could charge you extra fees just to use the websites and apps you want. We can stop them and keep the Internet open, fast, and awesome if we all contact Congress and the FCC, but we only have a few days left.'
+          body: 'Just kidding. You can still get to this site *for now*. But if the FCC ends net neutrality, your cable company could charge you extra fees just to use the websites and apps you want. We can stop them and keep the Internet open, fast, and awesome if we all contact the U.S. Congress and the FCC, but we only have a few days left.'
         };
+        break;
       case 'stop':
-        return {
+        themeObj = {
           className: theme,
           logos: ['images/stop.png'],
           headline: 'This site has been blocked by your ISP.',
-          body: 'Well, not yet. But without net neutrality, cable companies could censor websites, favoring their own business partners. We can stop them and keep the Internet open, fast, and awesome if we all contact Congress and the FCC, but we only have a few days left.'
+          body: 'Well, not yet. But without net neutrality, cable companies could censor websites, favoring their own business partners. We can stop them and keep the Internet open, fast, and awesome if we all contact the U.S. Congress and the FCC, but we only have a few days left.'
         };
+        break;
       case 'slow':
-        return {
+        themeObj = {
           className: theme,
           logos: ['images/slow.png'],
           headline: 'Sorry, we\'re stuck in the slow lane.',
-          body: 'Well, not yet. Cable companies want to get rid of net neutrality, so they can slow sites like ours to a crawl and shake us down for extra fees just to reach you. If they get their way, the Internet will never be the same. We can stop them and keep the web fast, open, and awesome if we all contact Congress and the FCC, but we only have a few days left.'
+          body: 'Well, not yet. Cable companies want to get rid of net neutrality, so they can slow sites like ours to a crawl and shake us down for extra fees just to reach you. If they get their way, the Internet will never be the same. We can stop them and keep the web fast, open, and awesome if we all contact the U.S. Congress and the FCC, but we only have a few days left.'
         };
+        break;
+      case 'without':
       default:
-        return {
+        themeObj = {
           className: 'without',
           logos: ['images/slow.png', 'images/stop_gradient.png', 'images/money_gradient.png'],
           headline: 'This is the web without net neutrality.',
           body: 'Cable companies want to get rid of net neutrality. Without it, sites like ours could be censored, slowed down, or forced to charge extra fees. We can stop them and keep the Internet open, fast, and awesome if we all contact Congress and the FCC, but we only have a few days left.'
         };
+        break;
     }
+
+    if (typeof theme == 'object') {
+      var keys = Object.keys(theme);
+      var key;
+      for (var i = 0; i < keys.length; i++) {
+        key = keys[i];
+        themeObj[key] = theme[key];
+      }
+    }
+
+    return themeObj;
   }
 
   function renderContent(theme) {
@@ -85,10 +111,19 @@
 
     // Render headline and body copy
     document.getElementById('headline').textContent = theme.headline;
-    document.getElementById('content').innerHTML = theme.body;
+    var bodyFragment = document.createDocumentFragment();
+    bodyFragment.textContent = theme.body + ' ';
+
+    var learnMore = document.createElement('a');
+    learnMore.setAttribute('href', 'https://www.battleforthenet.com/#widget-learn-more');
+    learnMore.setAttribute('target', '_blank');
+    learnMore.textContent = 'Learn more.';
+    bodyFragment.appendChild(learnMore);
+
+    document.getElementById('content').appendChild(bodyFragment);
   }
 
-  function renderOrgSignupCheckbox(org) {
+  function renderOrgRotation(org) {
     var fragment = document.createDocumentFragment();
 
     var orgInput = document.createElement('input');
@@ -100,11 +135,33 @@
     var checkbox = document.createElement('input');
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('name', 'opt_in');
+
+		// We don't show the opt-in in the Cloudflare App
+    checkbox.style.display = 'none';
+
     fragment.appendChild(checkbox);
 
-    var el = document.getElementById('organization-signup-checkbox');
-    el.appendChild(fragment);
-    el.style.display = 'none'
+    var disclaimer = document.createElement('span');
+    disclaimer.textContent = 'FCC comments are public records.';
+    fragment.appendChild(disclaimer);
+
+    document.getElementById('rotation').appendChild(fragment);
+
+    var donate = document.getElementById('donate');
+    if (org.donate) donate.setAttribute('href', org.donate);
+  }
+
+  function addCloseListeners() {
+    // Add close button listener.
+    document.getElementById('close').addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      sendMessage('stop');
+    });
+
+    document.getElementById('background').addEventListener('mousedown', function(e) {
+      // Ignore events that propagate up
+      if (e.target == document.getElementById('background')) sendMessage('stop');
+    });
   }
 
   function sendMessage(requestType, data) {
@@ -112,6 +169,18 @@
     data.requestType = requestType;
     data.BFTN_IFRAME_MSG = true;
     parent.postMessage(data, '*');
+  }
+
+  function initGoogleAnalytics() {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    if (typeof ga !== 'undefined') {
+      ga('create', 'UA-26576645-40', 'auto');
+      ga('send', 'pageview');
+    }
   }
 
   var animations = {
@@ -123,7 +192,15 @@
         for (var k in options) this.options[k] = options[k];
 
         renderContent(getTheme(this.options.theme));
-        renderOrgSignupCheckbox(getOrg(this.options.org));
+        renderOrgRotation(getOrg(this.options.org));
+
+        if (this.options.uncloseable) {
+          document.getElementById('close').classList.add('hidden');
+        } else {
+          addCloseListeners();
+        }
+
+        if (!this.options.disableGoogleAnalytics) initGoogleAnalytics();
 
         return this;
       },
@@ -156,9 +233,10 @@
     // TODO: Error handling
     // if (e && e.code >= 400) return onError(e);
 
-    var loading = document.getElementById('loading');
-    loading.addEventListener('transitionend', showAfterAction);
-    loading.classList.add('invisible');
+    if (loading) {
+      loading.addEventListener('transitionend', showAfterAction);
+      loading.classList.add('invisible');
+    }
 
     transitionTimer = setTimeout(showAfterAction, 500);
   }
@@ -166,30 +244,51 @@
   function showAfterAction(e) {
     if (transitionTimer) clearTimeout(transitionTimer);
 
-    document.getElementById('prompt').classList.remove('invisible');
-    document.getElementById('main').classList.add('invisible', 'hidden');
-    document.getElementById('loading').classList.add('hidden');
+    if (callPrompt) callPrompt.classList.remove('invisible');
+
+    if (main) {
+      main.classList.add('invisible');
+      main.classList.add('hidden');
+    }
+
+    if (loading) loading.classList.add('hidden');
   }
 
   // Handle form submission
-  var form = document.getElementById('form')
-  form.addEventListener('submit', function(e) {
+  var form = document.getElementById('form');
+  form.addEventListener('submit', function submitForm(e) {
     e.preventDefault();
 
     // Prefill after-action call form
-    var phone = document.getElementById('phone').value;
-    if (phone) document.getElementById('userPhone').value = phone;
-    document.getElementById('zipcode').value = document.getElementById('postcode').value;
+    var userPhone = document.getElementById('userPhone');
+    var phone = document.getElementById('phone');
+    if (userPhone && phone && phone.value) userPhone.value = phone.value;
 
-    document.getElementById('footer').classList.remove('hidden', 'invisible');
-    document.getElementById('prompt').classList.remove('hidden');
-    document.getElementById('main').classList.add('hidden');
+    var postcode = document.getElementById('postcode');
 
-    var loading = document.getElementById('loading');
+    var protest = document.getElementById('protest');
+    if (postcode && postcode.value) {
+      protest.setAttribute('href', [protest.href, '?zipcode=', postcode.value].join(''));
+    }
+
+    var zipcode = document.getElementById('zipcode');
+    if (postcode && postcode.value && zipcode) zipcode.value = postcode.value;
+
+    var footer = document.getElementById('footer');
+    if (footer) {
+      footer.classList.remove('hidden');
+      footer.classList.remove('invisible');
+    }
+
+    if (callPrompt) callPrompt.classList.remove('hidden');
+    if (main) main.classList.add('hidden');
 
     // TODO: Add config option to skip real submit?
     // loading.addEventListener('transitionend', onSuccess);
     // transitionTimer = setTimeout(onSuccess, 500);
+
+    var source = document.getElementById('source');
+    if (source) source.value = document.referrer;
 
     var formData = new FormData(form);
     var xhr = new XMLHttpRequest();
@@ -201,54 +300,58 @@
     xhr.open(form.getAttribute('method'), form.getAttribute('action'), true);
     xhr.send(formData);
 
-    loading.classList.remove('hidden', 'invisible');
+    if (loading) {
+      loading.classList.remove('hidden');
+      loading.classList.remove('invisible');
+    }
   });
 
   function showCallScript(e) {
     if (transitionTimer) clearTimeout(transitionTimer);
 
-    document.getElementById('script').classList.remove('hidden', 'invisible');
-    document.getElementById('prompt').classList.add('invisible', 'hidden');
-    document.getElementById('loading').classList.add('hidden');
+    if (callScript) {
+      callScript.classList.remove('hidden');
+      callScript.classList.remove('invisible');
+    }
+
+    if (callPrompt) {
+      callPrompt.classList.add('invisible');
+      callPrompt.classList.add('hidden');
+    }
+
+    if (loading) loading.classList.add('hidden');
   }
 
   function onCall(e) {
     if (transitionTimer) clearTimeout(transitionTimer);
 
-    var loading = document.getElementById('loading');
-    loading.addEventListener('transitionend', showCallScript);
-    loading.classList.add('invisible');
+    if (loading) {
+      loading.addEventListener('transitionend', showCallScript);
+      loading.classList.add('invisible');
+    }
 
     transitionTimer = setTimeout(showCallScript, 500);
   }
 
-  var call = document.getElementById('call')
-  call.addEventListener('submit', function(e) {
+  var call = document.getElementById('call');
+  call.addEventListener('submit', function submitCall(e) {
     e.preventDefault();
 
     var formData = new FormData(call);
     var xhr = new XMLHttpRequest();
 
-    var loading = document.getElementById('loading');
-    loading.addEventListener('transitionend', onCall);
-    transitionTimer = setTimeout(onCall, 500);
-    loading.classList.remove('hidden', 'invisible');
+    if (loading) {
+      loading.addEventListener('transitionend', onCall);
+      loading.classList.remove('hidden');
+      loading.classList.remove('invisible');
+    }
 
-    document.getElementById('prompt').classList.add('invisible');
+    transitionTimer = setTimeout(onCall, 500);
+
+    if (callPrompt) callPrompt.classList.add('invisible');
 
     xhr.open(call.getAttribute('method'), call.getAttribute('action'), true);
     xhr.send(formData);
-  });
-
-  // Add close button listener.
-  document.getElementById('close').addEventListener('mousedown', function(e) {
-    e.preventDefault();
-    sendMessage('stop');
-  });
-
-  document.getElementById('background').addEventListener('mousedown', function(e) {
-    // Ignore events that propagate up
-    if (e.target == document.getElementById('background')) sendMessage('stop');
   });
 
   // Start animation
