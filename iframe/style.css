@@ -422,7 +422,7 @@ body.without h1 {
 @supports(-webkit-background-clip: text) {
   body.slow h1,
   body.without h1 {
-    background: linear-gradient(#39ebfd, #6b74fb);
+    background: linear-gradient(#52a1ef, #6b74fb);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
