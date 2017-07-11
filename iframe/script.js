@@ -136,7 +136,7 @@
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('name', 'opt_in');
 
-		// We don't show the opt-in in the Cloudflare App
+    // We don't show the opt-in in the Cloudflare App
     checkbox.style.display = 'none';
 
     fragment.appendChild(checkbox);
