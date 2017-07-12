@@ -142,7 +142,7 @@
     fragment.appendChild(checkbox);
 
     var disclaimer = document.createElement('span');
-    disclaimer.textContent = 'FCC comments are public records.';
+    disclaimer.innerHTML = 'FCC comments are public records. <a href="https://www.fightforthefuture.org/privacy/" target="_blank">Privacy Policy</a>';
     fragment.appendChild(disclaimer);
 
     document.getElementById('rotation').appendChild(fragment);
@@ -286,9 +286,6 @@
     // TODO: Add config option to skip real submit?
     // loading.addEventListener('transitionend', onSuccess);
     // transitionTimer = setTimeout(onSuccess, 500);
-
-    var source = document.getElementById('source');
-    if (source) source.value = document.referrer;
 
     var formData = new FormData(form);
     var xhr = new XMLHttpRequest();
