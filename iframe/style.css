@@ -533,3 +533,16 @@ body.slow #logos img {
     min-width: 33%;
   }
 }
+
+@media (max-width: 800px) {
+  .modal input {
+    width: 93% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    flex: none !important;
+  }
+
+  .modal form .flex {
+    max-width: 100%;
+  }
+}

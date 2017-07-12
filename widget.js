@@ -156,7 +156,7 @@
 
     _bftn_util.setCookie('_BFTN_WIDGET_SHOWN', 'true', 365);
 
-    _bftn_util.injectCSS('_bftn_iframe_css', '#_bftn_wrapper { position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 20000; -webkit-overflow-scrolling: touch; overflow-y: scroll; } #_bftn_iframe { width: 100%; height: 100%;  }');
+    _bftn_util.injectCSS('_bftn_iframe_css', '#_bftn_wrapper { position: fixed; left: 0px; top: 0px; width: 100vw; height: 100%; z-index: 20000; -webkit-overflow-scrolling: touch; overflow-y: scroll; } #_bftn_iframe { width: 100%; width: 100vw; height: 100%; min-height: 750px;  }');
 
     // Preload images before showing the animation
     // preload();
